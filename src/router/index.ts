@@ -1,19 +1,27 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router'
-import Home from '../views/Home.vue'
+import Admin from '../pages/admin/Admin.vue'
+import Products from '../pages/admin/Products.vue'
+import ProductsCreate from "../pages/admin/ProductsCreate.vue"
+import ProductsEdit from "../pages/admin/ProductsEdit.vue"
+import Main from "../pages/Main.vue"
 
 const routes: Array<RouteRecordRaw> = [
   {
-    path: '/',
-    name: 'Home',
-    component: Home
+    // adding the main page to router
+    path: '/', component: Main
   },
   {
-    path: '/about',
-    name: 'About',
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "about" */ '../views/About.vue')
+    path: '/admin',
+    name: 'Admin',
+    component: Admin,
+    // because of this we can see the table : 
+    // we i imported it within the router using the same path as the Admin component 
+    // so it renders on the page.
+    children: [
+      { path: 'products', component: Products },
+      { path: 'products/create', component: ProductsCreate },
+      { path: 'products/:id/edits', component: ProductsEdit }
+    ]
   }
 ]
 

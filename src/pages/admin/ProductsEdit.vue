@@ -1,0 +1,54 @@
+<template lang="">
+  <form @submit.prevent="submit">
+    <div class="form-group">
+      <label>Title</label>
+        <!-- Implement variable title -->
+      <input v-model="title" class='form-control' name="title"/>
+    </div>
+    <div>
+      <label>Image</label>
+      <!-- Implement variable image -->
+      <input v-model="image" class='form-control' name='image'/>
+    </div>
+    <button class = 'btn btn-outline-secondary'>Create Product</button>
+  </form>
+</template>
+<script>
+import { ref, onMounted } from "vue";
+import { useRoute, useRouter } from "vue-router"
+export default {
+  name: "ProductEdits",
+  setup() {
+    // define variables to use in template
+    const title = ref("");
+    const image = ref("");
+    const router = useRouter();
+    const route = useRoute();
+    onMounted = (async () => {
+      const respone = await fetch(`http://localhost:8000/api/products/${route.params.id}`)
+      const product = await respone.json();
+      title.value = product.title;
+      image.value = product.image;
+    })
+    const submit = async () => {
+      await fetch(`http://localhost:8000/api/products/${route.params.id}`,{ 
+        method: "PUT",
+        headers:{"Content-Type" : 'application/json'},
+        body: JSON.stringify({
+          title: title.value,
+          image: image.value
+        })
+      })
+      await router.push('/admin/products');
+    }
+    return {
+      title,
+      image,
+      submit
+    };
+  }
+}
+
+</script>
+<style lang="">
+</style>
