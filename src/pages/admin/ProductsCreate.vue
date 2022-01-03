@@ -1,4 +1,5 @@
 <template lang="">
+<!--  -->
   <form @submit.prevent="submit">
     <div class="form-group">
       <label>Title</label>
@@ -20,18 +21,20 @@ export default {
   name: "ProductCreate",
   setup() {
     // define variables to use in template
-    const title = ref("");
-    const image = ref("");
+    const title = ref('');
+    const image = ref('');
     const router = useRouter();
     const submit = async () => {
-      await fetch(`http://localhost:8000/api/products`,{ 
-        method: "POST",
-        headers:{"Content-Type" : 'application/json'},
+     await fetch(`http://localhost:8000/api/products`,{ 
+        method: 'POST',
+        headers:{'Content-Type' : 'application/json'},
         body: JSON.stringify({
           title: title.value,
           image: image.value
         })
-      })
+      }).then(response => response.json())
+      .catch(err => console.log(err))
+      
       await router.push('/admin/products');
     }
     return {

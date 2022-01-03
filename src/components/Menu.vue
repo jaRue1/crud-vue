@@ -3,9 +3,8 @@
       <div class="sidebar-sticky pt-3">
         <ul class="nav flex-column">
           <li class="nav-item">
-            <a class="nav-link active" href="#">
-              Products
-            </a>
+            <router-link :to="`/`" class="nav-link active" >Home</router-link>
+            <router-link :to="`/admin/products/create`" class="nav-link active" >Create</router-link>
           </li>
         </ul>
       </div>

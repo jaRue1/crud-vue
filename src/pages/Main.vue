@@ -1,8 +1,8 @@
 <template lang="">
+<Nav/>
 <main role="main">
   <div class="album py-5 bg-light">
     <div class="container">
-
       <div class="row">
         <div class="col-md-4" v-for="product in products" :key="product.id">
           <div class="card mb-4 shadow-sm">
@@ -28,8 +28,12 @@
 <script lang="ts">
 import {ref, onMounted} from 'vue';
 import { Product } from "@/interfaces/product"
+import Nav from '@/components/Nav.vue'
 export default {
-  name: "Main",
+  name: "Main", 
+  components: {Nav},
+
+// ----------------Functions && API stuff------------------------
   setup () {
     const products = ref([] as Product[]);
 
@@ -41,9 +45,9 @@ export default {
 
     // defining the like function 
     const like = async(id: number) => {
-      const response = await fetch(`http://localhost:8001/api/products/${id}/like`, {
-        method: "POST",
-        headers:{"Content-Type" : 'application/json'},
+       await fetch(`http://localhost:8001/api/products/${id}/like`, {
+        method: 'POST',
+        headers:{'Content-Type' : 'application/json'},
       });
 
       products.value = products.value.map((p: Product) => {
@@ -52,12 +56,12 @@ export default {
              p.likes++;
         }
         return p
-      }
-      );
+      });
     }
 
     return {
-      products
+      products,
+      like
     }
   }
 }
